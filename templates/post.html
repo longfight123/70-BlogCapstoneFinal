@@ -1,0 +1,73 @@
+{% include "header.html" %}
+{% import 'bootstrap/wtf.html' as wtf %} <!--import this to use quickform-->
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{post.title}}</h1>
+            <h2 class="subheading">{{post.subtitle}}</h2>
+            <span class="meta">Posted by
+              <!--            Change from post.author to post.parent.name as the parent attribute is now a user object-->
+              <a href="#">{{post.parent.name}}</a>
+              on {{post.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ post.body|safe }}
+          <hr>
+
+            <div class="clearfix">
+            <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+            </div>
+          <!--            add the wtform here, under the other comments-->
+<!--          the two lines of ckeditor code are required for the ckeditor field to work-->
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='comment') }}
+            {{ wtf.quick_form(form=form, novalidate=True, button_map={"submit": "primary"}) }}
+
+
+
+<!--           Comments Area -->
+          <div class="col-lg-8 col-md-10 mx-auto comment">
+              <ul class="commentList">
+                <!--in each post object is a children_comment attribute which contains a list of comment objects associated with it-->
+                {% for text in post.children_comment %}
+                <li>
+                    <div class="commenterImage">
+<!--This is how you add gravatar images, you need an email-->
+                      <img src="{{ text.parent_user.email | gravatar }}"/>
+                    </div>
+                    <div class="commentText">
+<!--                      add the safe filter because strings in the ckeditor are saved as HTML-->
+                      <p>{{ text.comment | safe }}</p>
+<!--                      add the authors name, this can be obtained by tapping into the Comment objects user relationship-->
+<!--                      which contains a the User object associated with it-->
+                      <span class="date sub-text">{{ text.parent_user.name }}</span>
+
+                      {% endfor %}
+                    </div>
+                </li>
+              </ul>
+            </div>
+          <hr>
+
+
+          </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+{% include "footer.html" %}
