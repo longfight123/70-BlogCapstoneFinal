@@ -36,7 +36,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL1', 'sqlite:///blog.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///blog.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -89,7 +89,7 @@ class Comment(db.Model):
 
 
 
-# db.create_all() # Comment this out after creating the new User table
+db.create_all() # Comment this out after creating the new User table
 
 #create python decorator called admin_only so that only if the current_user's id is 1 they can access these routes
 #otherwise, they should get a 403 error (not authorised)
