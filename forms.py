@@ -13,13 +13,13 @@ class CreatePostForm(FlaskForm):
 
 ## Create a WTForm for new users
 class UserForm(FlaskForm):
-    email = StringField(label='Email:', validators=[DataRequired(), Email()]) # Note you need to install wtforms[email] something to use email validator
+    email = StringField(label='Email:', validators=[DataRequired()]) # Note you need to install wtforms[email] something to use email validator
     name = StringField(label='Name:', validators=[DataRequired()])
     password = PasswordField(label='Password:', validators=[DataRequired()])
     submit = SubmitField(label='Sign me up!')
 # Create a WTForm for logging in
 class LoginForm(FlaskForm):
-    email = StringField(label='Email:', validators=[DataRequired(), Email()])
+    email = StringField(label='Email:', validators=[DataRequired()])
     password = PasswordField(label='Password:', validators=[DataRequired()])
     submit = SubmitField(label='Log me in!')
 
